@@ -6,7 +6,10 @@
     </appender>
 
     <logger name="com.root7325" level="TRACE"/>
-    <logger name="io.netty" level="OFF"/>
+    <logger name="com.root7325.bancho.service.PingService" level="OFF"/>
+    <logger name="org.jboss" level="OFF"/>
+    <logger name="io.netty" level="WARN"/>
+    <logger name="org.hibernate" level="WARN"/>
 
     <root level="TRACE">
         <appender-ref ref="STDOUT" />

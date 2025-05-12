@@ -6,7 +6,7 @@ import io.netty.util.internal.StringUtil;
 import java.nio.charset.StandardCharsets;
 
 /**
- * @author kate on 02.05.2025
+ * @author root7325 on 18.04.2024
  */
 public class ByteBufUtils {
     /**
