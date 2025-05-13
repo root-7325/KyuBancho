@@ -5,7 +5,7 @@ import com.root7325.entities.User;
 /**
  * @author kate on 04.05.2025
  */
-public interface UsersDAO {
+public interface UserDAO {
     User getUser(String username, String passwordHash);
     void addUser(String username, String password);
     void removeUser(String username);
