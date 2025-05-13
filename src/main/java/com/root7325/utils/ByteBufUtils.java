@@ -15,47 +15,68 @@ public class ByteBufUtils {
      * @return read from ByteBuf string
      */
     public static String readNETString(ByteBuf buf) {
+        if (buf == null) {
+            throw new IllegalArgumentException("ByteBuf can't be null!");
+        }
         StringBuilder stringBuilder = new StringBuilder();
 
         while (buf.isReadable()) {
             byte temp = buf.readByte();
-
             if (temp == 13) {
                 buf.readByte();
                 break;
-            } else {
-                stringBuilder.append((char) temp);
             }
+            stringBuilder.append((char) temp);
         }
-
+        
         return stringBuilder.toString();
     }
 
     public static String readString(ByteBuf buf) {
+        if (buf == null) {
+            throw new IllegalArgumentException("ByteBuf can't be null!");
+        }
+
         if (buf.readByte() == 0) {
             return "";
-        };
+        }
         int len = read7BitInt(buf);
+        if (len < 0 || len > buf.readableBytes()) {
+            throw new IndexOutOfBoundsException("String length is incorrect!");
+        }
         return buf.readCharSequence(len, StandardCharsets.UTF_8).toString();
     }
 
     public static void writeString(String str, ByteBuf buf) {
+        if (buf == null) {
+            throw new IllegalArgumentException("ByteBuf can't be null!");
+        }
+
         if (str == null) {
             buf.writeByte(0);
             return;
         }
-        buf.writeByte(11);
+
         byte[] string = str.getBytes(StandardCharsets.UTF_8);
+        
+        buf.writeByte(11);
         write7BitInt(string.length, buf);
         buf.writeBytes(string);
     }
 
     public static int read7BitInt(ByteBuf buf) {
+        if (buf == null) {
+            throw new IllegalArgumentException("ByteBuf can't be null!");
+        }
+
         int num = 0;
         int num2 = 0;
         while (num2 != 35) {
+            if (!buf.isReadable()) {
+                throw new IndexOutOfBoundsException("Not enough data in buffer!");
+            }
             byte b = buf.readByte();
-            num |= (int) (b & 127) << num2;
+            num |= (b & 127) << num2;
             num2 += 7;
             if ((b & 128) == 0) {
                 return num;
@@ -65,6 +86,10 @@ public class ByteBufUtils {
     }
 
     public static void write7BitInt(int i, ByteBuf buf) {
+        if (buf == null) {
+            throw new IllegalArgumentException("ByteBuf can't be null!");
+        }
+
         int num;
         for (num = i; num >= 128; num >>= 7) {
             buf.writeByte((byte)(num | 128));

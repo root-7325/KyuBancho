@@ -23,14 +23,13 @@ public class BanchoServer {
             ChannelFuture channelFuture = serverBootstrap.bind(port);
             channelFuture.addListener(future -> {
                 if (future.isSuccess()) {
-                    log.info("Server successfully bound to port {}", port);
+                    log.info("Server successfully bound to port {}!", port);
                 } else {
-                    log.error("Failed to bind to port {}", port, future.cause());
+                    log.error("Failed to bind to port {}.", port, future.cause());
                 }
             });
         } catch (Exception ex) {
-            // TODO: osu-like exception message
-            log.error("Fatal exception in channel future!", ex);
+            log.error("We're got dirty cookie...", ex);
         }
     }
 }

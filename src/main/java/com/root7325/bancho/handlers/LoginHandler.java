@@ -22,7 +22,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class LoginHandler {
 
     public void handle(LoginDataDecoder.LoginData loginData, BanchoSession session) {
-        log.debug("{} issued login!", loginData.getUsername());
+        log.info("{} issued login!", loginData.getUsername());
         SessionManager instance = SessionManager.getInstance();
 
         User user = loadUser(loginData);
@@ -30,7 +30,7 @@ public class LoginHandler {
         if (user == null) {
             session.write(new IntPacket(PacketType.Bancho_LoginReply, -1));
             session.flush();
-            log.debug("Incorrect login attempt for {}!", loginData.getUsername());
+            log.info("Incorrect login attempt for {}!", loginData.getUsername());
         } else {
             processLogin(instance, session, user);
         }
@@ -49,12 +49,10 @@ public class LoginHandler {
                 new IntPacket(PacketType.Bancho_LoginPermissions, user.getPermissions().getValue()),
                 new StringPacket(PacketType.Bancho_Announce, "KyuBancho - welcome!")
         );
-        sessionManager.getSessions().forEach(banchoSession -> {
-            session.write(new UserStatsPacket(user, banchoSession.getUserStatus()));
-        });
+        sessionManager.getSessions().forEach(banchoSession -> session.write(new UserStatsPacket(user, banchoSession.getUserStatus())));
 
         session.flush();
         sessionManager.addSession(session);
-        log.debug("{} is logged in!", user.getUsername());
+        log.info("{} is logged in!", user.getUsername());
     }
 }

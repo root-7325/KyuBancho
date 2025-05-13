@@ -37,7 +37,6 @@ public class BanchoChannelHandler extends ChannelInboundHandlerAdapter {
             return;
         }
 
-        // todo: move out this
         if (msg instanceof LoginDataDecoder.LoginData) {
             log.debug("Handling login.");
             router.handleLogin((LoginDataDecoder.LoginData) msg, banchoSession);

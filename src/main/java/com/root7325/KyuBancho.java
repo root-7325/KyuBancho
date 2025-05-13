@@ -42,6 +42,7 @@ public class KyuBancho {
 
         Thread serverThread = new Thread(() -> banchoServer.bind(BANCHO_PORT));
         serverThread.setDaemon(true);
+
         serverThread.start();
 
         ConsoleInputHandler inputHandler = new ConsoleInputHandler(serviceLocator.getUserDAO(), new Scanner(System.in));

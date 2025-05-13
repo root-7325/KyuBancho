@@ -17,7 +17,6 @@ public class LoginDataDecoder extends ByteToMessageDecoder {
 
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) throws Exception {
-        // todo: some checks via channelHandlerContext.attr ?
 
         LoginData loginData = new LoginData();
         loginData.setUsername(ByteBufUtils.readNETString(byteBuf));
@@ -25,7 +24,7 @@ public class LoginDataDecoder extends ByteToMessageDecoder {
         byteBuf.clear();
 
         list.add(loginData);
-        channelHandlerContext.pipeline().remove(LoginDataDecoder.class); // this decoder no longer needed (in theory)
+        channelHandlerContext.pipeline().remove(LoginDataDecoder.class);
     }
 
     @Data
