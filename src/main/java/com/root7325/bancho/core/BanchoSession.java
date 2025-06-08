@@ -2,6 +2,7 @@ package com.root7325.bancho.core;
 
 import com.root7325.KyuBancho;
 import com.root7325.bancho.packets.AbstractPacket;
+import com.root7325.bancho.service.StreamingManagerService;
 import com.root7325.bancho.structures.UserStatus;
 import com.root7325.entities.User;
 import io.netty.channel.Channel;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -27,11 +29,20 @@ public class BanchoSession {
     private UserStatus userStatus = new UserStatus();
     @Setter
     private long lastPongTime = System.currentTimeMillis();
+    @Setter
+    private int spectatingSubject;
+    @Setter
+    private StreamingManagerService streamingManagerService = new StreamingManagerService(this, new ArrayList<>());
 
     public void write(AbstractPacket... packets) {
         for (AbstractPacket packet : packets) {
             channel.write(packet);
         }
+    }
+
+    public void writeAndFlush(AbstractPacket... packets) {
+        write(packets);
+        flush();
     }
 
     public void flush() {

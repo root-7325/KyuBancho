@@ -1,8 +1,6 @@
 package com.root7325.bancho.packets;
 
-import com.root7325.bancho.packets.impl.PongPacket;
-import com.root7325.bancho.packets.impl.RequestUserStatusPacket;
-import com.root7325.bancho.packets.impl.SendUserStatusPacket;
+import com.root7325.bancho.packets.impl.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +14,9 @@ public class PacketFactory {
         put(PacketType.Osu_Pong, PongPacket::new);
         put(PacketType.Osu_RequestStatusUpdate, RequestUserStatusPacket::new);
         put(PacketType.Osu_SendUserStatus, SendUserStatusPacket::new);
+        put(PacketType.Osu_StartSpectating, StartSpectatingPacket::new);
+        put(PacketType.Osu_StopSpectating, StopSpectatingPacket::new);
+        put(PacketType.Osu_SpectateFrames, SpectateFramesPacket::new);
     }};
 
     private final Map<PacketType, Supplier<AbstractPacket>> suppliers;

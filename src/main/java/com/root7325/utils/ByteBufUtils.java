@@ -1,9 +1,14 @@
 package com.root7325.utils;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.util.internal.StringUtil;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.zip.GZIPInputStream;
 
 /**
  * @author root7325 on 18.04.2024
@@ -95,5 +100,23 @@ public class ByteBufUtils {
             buf.writeByte((byte)(num | 128));
         }
         buf.writeByte((byte)num);
+    }
+
+    public static ByteBuf decompress(ByteBuf compressedBuf) throws IOException {
+        byte[] compressedBytes = new byte[compressedBuf.readableBytes()];
+        compressedBuf.readBytes(compressedBytes);
+
+        try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(compressedBytes);
+             GZIPInputStream gzipInputStream = new GZIPInputStream(byteArrayInputStream);
+             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = gzipInputStream.read(buffer)) > 0) {
+                byteArrayOutputStream.write(buffer, 0, len);
+            }
+
+            return Unpooled.wrappedBuffer(byteArrayOutputStream.toByteArray()); // todo: change this
+        }
     }
 }

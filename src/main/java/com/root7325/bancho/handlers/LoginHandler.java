@@ -49,10 +49,12 @@ public class LoginHandler {
                 new IntPacket(PacketType.Bancho_LoginPermissions, user.getPermissions().getValue()),
                 new StringPacket(PacketType.Bancho_Announce, "KyuBancho - welcome!")
         );
-        sessionManager.getSessions().forEach(banchoSession -> session.write(new UserStatsPacket(user, banchoSession.getUserStatus())));
+        sessionManager.addSession(session);
+        sessionManager.getSessions().forEach(banchoSession ->
+            session.write(new UserStatsPacket(banchoSession.getUser(), banchoSession.getUserStatus()))
+        );
 
         session.flush();
-        sessionManager.addSession(session);
         log.info("{} is logged in!", user.getUsername());
     }
 }

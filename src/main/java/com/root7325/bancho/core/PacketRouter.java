@@ -3,6 +3,7 @@ package com.root7325.bancho.core;
 import com.root7325.bancho.handlers.*;
 import com.root7325.bancho.packets.AbstractPacket;
 import com.root7325.bancho.packets.PacketType;
+import com.root7325.bancho.packets.impl.StopSpectatingPacket;
 import com.root7325.netty.codec.LoginDataDecoder;
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,6 +32,9 @@ public class PacketRouter {
         handlers.put(PacketType.Osu_Pong, new PongHandler());
         handlers.put(PacketType.Osu_RequestStatusUpdate, new RequestStatusUpdateHandler());
         handlers.put(PacketType.Osu_SendUserStatus, new SendUserStatusHandler());
+        handlers.put(PacketType.Osu_StartSpectating, new StartSpectatingHandler());
+        handlers.put(PacketType.Osu_StopSpectating, new StopSpectatingHandler());
+        handlers.put(PacketType.Osu_SpectateFrames, new SpectateFramesHandler());
     }
 
     public void handle(AbstractPacket packet, BanchoSession session) {

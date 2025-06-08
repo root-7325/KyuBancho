@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -39,7 +40,7 @@ public class PacketDecoder extends ByteToMessageDecoder {
             return;
         }
 
-        ByteBuf in = byteBuf.readBytes(header.getLength());
+        ByteBuf in = readBody(byteBuf, header);
         processPacket(header.getType(), in, list);
     }
 
@@ -56,6 +57,15 @@ public class PacketDecoder extends ByteToMessageDecoder {
 
     private boolean hasEnoughBytesForBody(ByteBuf byteBuf, int length) {
         return byteBuf.readableBytes() >= length;
+    }
+
+    private ByteBuf readBody(ByteBuf byteBuf, PacketHeader header) throws IOException {
+        ByteBuf payload = byteBuf.readBytes(header.length);
+
+        if (header.isCompressed()) {
+            return ByteBufUtils.decompress(payload);
+        }
+        return payload;
     }
 
     private void processPacket(int type, ByteBuf in, List<Object> list) {
