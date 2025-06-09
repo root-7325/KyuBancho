@@ -17,6 +17,9 @@ public class PacketFactory {
         put(PacketType.Osu_StartSpectating, StartSpectatingPacket::new);
         put(PacketType.Osu_StopSpectating, StopSpectatingPacket::new);
         put(PacketType.Osu_SpectateFrames, SpectateFramesPacket::new);
+        put(PacketType.Osu_ChannelJoin, ChannelJoinPacket::new);
+        put(PacketType.Osu_SendIrcMessage, ChatMessagePacket::new);
+        put(PacketType.Osu_SendIrcMessagePrivate, ChatMessagePacket::new);
     }};
 
     private final Map<PacketType, Supplier<AbstractPacket>> suppliers;

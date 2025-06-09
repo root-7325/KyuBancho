@@ -68,4 +68,10 @@ public class SessionManager {
     public Optional<BanchoSession> getSession(int userId) {
         return Optional.ofNullable(activeSessions.get(userId));
     }
+
+    public Optional<BanchoSession> getSession(String username) {
+        return activeSessions.values().stream()
+                .filter(session -> username.equals(session.getUser().getUsername()))
+                .findFirst();
+    }
 }
