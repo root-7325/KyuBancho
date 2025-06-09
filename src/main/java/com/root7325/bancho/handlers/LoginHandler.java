@@ -1,5 +1,6 @@
 package com.root7325.bancho.handlers;
 
+import com.root7325.bancho.chat.ChannelManager;
 import com.root7325.bancho.core.BanchoSession;
 import com.root7325.bancho.core.ServiceLocator;
 import com.root7325.bancho.core.SessionManager;
@@ -49,6 +50,8 @@ public class LoginHandler {
                 new IntPacket(PacketType.Bancho_LoginPermissions, user.getPermissions().getValue()),
                 new StringPacket(PacketType.Bancho_Announce, "KyuBancho - welcome!")
         );
+        processChannels(session);
+
         sessionManager.addSession(session);
         sessionManager.getSessions().forEach(banchoSession ->
             session.write(new UserStatsPacket(banchoSession.getUser(), banchoSession.getUserStatus()))
@@ -56,5 +59,15 @@ public class LoginHandler {
 
         session.flush();
         log.info("{} is logged in!", user.getUsername());
+    }
+
+    private void processChannels(BanchoSession session) {
+        ChannelManager channelManager = ChannelManager.getInstance();
+        channelManager.getChannel("#osu").get().newParticipant(session);
+
+        channelManager.getChannelsName().forEach(channel -> {
+            session.write(new StringPacket(PacketType.Bancho_ChannelAvailable, channel));
+        });
+
     }
 }

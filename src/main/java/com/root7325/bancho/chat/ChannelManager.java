@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -14,7 +15,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ChannelManager {
     private static final ChannelManager INSTANCE = new ChannelManager();
 
-    private final Map<String, Channel> channels = new ConcurrentHashMap<>();
+    private final Map<String, Channel> channels = new ConcurrentHashMap<>() {{
+        put("#osu", new Channel("#osu"));
+    }};
 
     public static ChannelManager getInstance() {
         return INSTANCE;
@@ -24,6 +27,10 @@ public class ChannelManager {
         Channel channel = new Channel(name);
         channels.put(name, channel);
         return channel;
+    }
+
+    public Set<String> getChannelsName() {
+        return channels.keySet();
     }
 
     public boolean removeChannel(String name) {

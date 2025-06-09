@@ -6,22 +6,18 @@ import com.root7325.utils.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * @author root7325 on 09.06.2025
  */
 @Getter
+@Setter
 @NoArgsConstructor
 public class ChatMessagePacket extends AbstractPacket {
-    private PacketType packetType;
-
     private String sender;
     private String target;
     private String content;
-
-    public ChatMessagePacket(PacketType packetType) {
-        this.packetType = packetType;
-    }
 
     public boolean isPrivate() {
         return target.isEmpty() || target.charAt(0) != '#';

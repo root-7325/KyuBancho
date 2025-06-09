@@ -24,11 +24,7 @@ public class ChatHandler implements IHandler {
     public void handle(AbstractPacket packet, BanchoSession session) {
         ChatMessagePacket messagePacket = (ChatMessagePacket) packet;
         messagePacket.setPacketType(PacketType.Bancho_SendIrcMessage);
-
-        if (!messagePacket.getSender().equals(session.getUser().getUsername())) {
-            log.warn("Username in packet mismatches with actual!");
-            return;
-        }
+        messagePacket.setSender(session.getUser().getUsername());
 
         ChannelManager manager = ChannelManager.getInstance();
         if (messagePacket.isPrivate()) {
@@ -55,7 +51,11 @@ public class ChatHandler implements IHandler {
 
         optionalChannel.ifPresent(channel -> {
             List<BanchoSession> sessionList = channel.getParticipants();
-            sessionList.forEach(session -> session.writeAndFlush(packet));
+            sessionList.forEach(session -> {
+                if (!session.getUser().getUsername().equals(packet.getSender())) {
+                    session.writeAndFlush(packet);
+                }
+            });
         });
     }
 }

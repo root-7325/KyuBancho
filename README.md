@@ -32,7 +32,7 @@ This project is in **early development state**. Many core features aren't implem
     - Automated patching solution may appear at some day
 3. Build and run the server
     - Either directly from your IDE
-    - Or via `mvn package` and running with `java -jar target/kyu-bancho-0.0.4X.jar`
+    - Or via `mvn package` and running with `java -jar target/kyu-bancho-0.0.4XY.jar`
     Don't forget to `mvn compile` after changing properties.
 4. Create an account when running with: `useradd {username} {password}`
 

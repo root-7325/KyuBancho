@@ -35,6 +35,9 @@ public class PacketRouter {
         handlers.put(PacketType.Osu_StartSpectating, new StartSpectatingHandler());
         handlers.put(PacketType.Osu_StopSpectating, new StopSpectatingHandler());
         handlers.put(PacketType.Osu_SpectateFrames, new SpectateFramesHandler());
+        handlers.put(PacketType.Osu_ChannelJoin, new ChannelJoinHandler());
+        handlers.put(PacketType.Osu_SendIrcMessage, new ChatHandler());
+        handlers.put(PacketType.Osu_SendIrcMessagePrivate, new ChatHandler());
     }
 
     public void handle(AbstractPacket packet, BanchoSession session) {
