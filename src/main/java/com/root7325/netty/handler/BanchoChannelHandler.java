@@ -1,33 +1,38 @@
 package com.root7325.netty.handler;
 
+import com.google.inject.Inject;
 import com.root7325.bancho.core.BanchoSession;
 import com.root7325.bancho.core.PacketRouter;
-import com.root7325.bancho.core.SessionManager;
+import com.root7325.bancho.core.ISessionManager;
 import com.root7325.bancho.packet.AbstractPacket;
 import com.root7325.netty.codec.LoginDataDecoder;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author kate on 02.05.2025
  */
 @Slf4j
+@AllArgsConstructor(onConstructor = @__({@Inject}))
 public class BanchoChannelHandler extends ChannelInboundHandlerAdapter {
-    private static final PacketRouter router = new PacketRouter();
+    private final PacketRouter router;
+    private final ISessionManager sessionManager;
     private BanchoSession banchoSession;
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         log.info("{} is active!", ctx.channel().remoteAddress());
 
-        this.banchoSession = new BanchoSession(ctx.channel());
+        this.banchoSession = new BanchoSession();
+        this.banchoSession.setChannel(ctx.channel());
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         log.info("{} is inactive!", ctx.channel().remoteAddress());
-        SessionManager.getInstance().removeSession(banchoSession);
+        sessionManager.removeSession(banchoSession);
     }
 
     @Override

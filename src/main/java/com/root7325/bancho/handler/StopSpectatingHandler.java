@@ -1,10 +1,12 @@
 package com.root7325.bancho.handler;
 
+import com.google.inject.Inject;
 import com.root7325.bancho.core.BanchoSession;
-import com.root7325.bancho.core.SessionManager;
+import com.root7325.bancho.core.ISessionManager;
 import com.root7325.bancho.packet.AbstractPacket;
 import com.root7325.bancho.packet.PacketType;
 import com.root7325.bancho.packet.impl.generic.IntPacket;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -14,7 +16,10 @@ import java.util.Optional;
  * @author root7325 on 07.06.2025
  */
 @Slf4j
+@AllArgsConstructor(onConstructor = @__({@Inject}))
 public class StopSpectatingHandler implements IHandler {
+    private final ISessionManager sessionManager;
+
     @Override
     public void handle(AbstractPacket packet, BanchoSession session) {
         if (session.getSpectatingSubject() <= 0) {
@@ -35,8 +40,7 @@ public class StopSpectatingHandler implements IHandler {
     }
 
     private Optional<BanchoSession> getTargetSession(int id) {
-        SessionManager manager = SessionManager.getInstance();
-        return manager.getSession(id);
+        return sessionManager.getSession(id);
     }
 
     private void notifyLeft(int id, BanchoSession target, List<BanchoSession> spectators) {

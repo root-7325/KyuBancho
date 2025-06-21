@@ -1,9 +1,5 @@
 package com.root7325.config;
 
-/**
- * @author root7325 on 21.06.2025
- */
-
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

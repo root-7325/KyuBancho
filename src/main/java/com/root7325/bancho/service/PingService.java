@@ -1,6 +1,7 @@
 package com.root7325.bancho.service;
 
-import com.root7325.bancho.core.SessionManager;
+import com.google.inject.Inject;
+import com.root7325.bancho.core.ISessionManager;
 import com.root7325.bancho.packet.PacketType;
 import com.root7325.bancho.packet.impl.generic.EmptyPacket;
 import com.root7325.utils.Constants;
@@ -19,8 +20,11 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class PingService {
     private final ScheduledExecutorService scheduler;
+    private final ISessionManager sessionManager;
 
-    public PingService() {
+    @Inject
+    public PingService(ISessionManager sessionManager) {
+        this.sessionManager = sessionManager;
         this.scheduler = Executors.newSingleThreadScheduledExecutor();
     }
 
@@ -36,10 +40,9 @@ public class PingService {
 
     private void ping() {
         log.trace("Ping was called.");
-        SessionManager instance = SessionManager.getInstance();
-        instance.getSessions().forEach(session -> {
+        sessionManager.getSessions().forEach(session -> {
             if (System.currentTimeMillis() - session.getLastPongTime() > 15_000) {
-                instance.removeSession(session);
+                sessionManager.removeSession(session);
             }
 
             session.write(new EmptyPacket(PacketType.Bancho_Ping));

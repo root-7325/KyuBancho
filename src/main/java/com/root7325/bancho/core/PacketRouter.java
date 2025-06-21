@@ -1,11 +1,14 @@
 package com.root7325.bancho.core;
 
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 import com.root7325.bancho.handler.*;
 import com.root7325.bancho.packet.AbstractPacket;
 import com.root7325.bancho.packet.PacketType;
 import com.root7325.netty.codec.LoginDataDecoder;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,31 +20,33 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Slf4j
 public class PacketRouter {
-    private final Map<PacketType, IHandler> handlers;
-    private final LoginHandler loginHandler;
+    private final Map<PacketType, Class<? extends IHandler>> handlers;
+    private final Injector injector;
 
-    public PacketRouter() {
+    @Inject
+    public PacketRouter(Injector injector) {
+        this.injector = injector;
         this.handlers = new ConcurrentHashMap<>();
-        this.loginHandler = new LoginHandler();
 
         registerDefaults();
     }
 
     private void registerDefaults() {
-        handlers.put(PacketType.Osu_Pong, new PongHandler());
-        handlers.put(PacketType.Osu_RequestStatusUpdate, new RequestStatusUpdateHandler());
-        handlers.put(PacketType.Osu_SendUserStatus, new SendUserStatusHandler());
-        handlers.put(PacketType.Osu_StartSpectating, new StartSpectatingHandler());
-        handlers.put(PacketType.Osu_StopSpectating, new StopSpectatingHandler());
-        handlers.put(PacketType.Osu_SpectateFrames, new SpectateFramesHandler());
-        handlers.put(PacketType.Osu_ChannelJoin, new ChannelJoinHandler());
-        handlers.put(PacketType.Osu_SendIrcMessage, new ChatHandler());
-        handlers.put(PacketType.Osu_SendIrcMessagePrivate, new ChatHandler());
+        handlers.put(PacketType.Osu_Pong, PongHandler.class);
+        handlers.put(PacketType.Osu_RequestStatusUpdate, RequestStatusUpdateHandler.class);
+        handlers.put(PacketType.Osu_SendUserStatus, SendUserStatusHandler.class);
+        handlers.put(PacketType.Osu_StartSpectating, StartSpectatingHandler.class);
+        handlers.put(PacketType.Osu_StopSpectating, StopSpectatingHandler.class);
+        handlers.put(PacketType.Osu_SpectateFrames, SpectateFramesHandler.class);
+        handlers.put(PacketType.Osu_ChannelJoin, ChannelJoinHandler.class);
+        handlers.put(PacketType.Osu_SendIrcMessage, ChatHandler.class);
+        handlers.put(PacketType.Osu_SendIrcMessagePrivate, ChatHandler.class);
     }
 
     public void handle(AbstractPacket packet, BanchoSession session) {
-        IHandler handler = handlers.get(packet.getPacketType());
-        if (handler != null) {
+        Class<? extends IHandler> handlerClass = handlers.get(packet.getPacketType());
+        if (handlerClass != null) {
+            IHandler handler = injector.getInstance(handlerClass);
             handler.handle(packet, session);
             log.debug("Packet handled by {}", handler.getClass().getSimpleName());
         } else {
@@ -50,6 +55,7 @@ public class PacketRouter {
     }
 
     public void handleLogin(LoginDataDecoder.LoginData data, BanchoSession banchoSession) {
-        loginHandler.handle(data, banchoSession);
+        LoginHandler handler = injector.getInstance(LoginHandler.class);
+        handler.handle(data, banchoSession);
     }
 }

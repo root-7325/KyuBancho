@@ -1,5 +1,6 @@
 package com.root7325.dao;
 
+import com.google.inject.Inject;
 import com.root7325.entity.User;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
@@ -13,7 +14,7 @@ import org.hibernate.Transaction;
  * @author kate on 12.05.2025
  */
 @Slf4j
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class UserDAOImpl implements UserDAO {
     private final SessionFactory sessionFactory;
 

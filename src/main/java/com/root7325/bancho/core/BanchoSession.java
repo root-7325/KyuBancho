@@ -17,18 +17,13 @@ import java.util.ArrayList;
  */
 @Slf4j
 @Getter
-@RequiredArgsConstructor
+@Setter
 public class BanchoSession {
-    private final Channel channel;
-    @Setter
+    private Channel channel;
     private User user = new User();
-    @Setter
     private UserStatus userStatus = new UserStatus();
-    @Setter
     private long lastPongTime = System.currentTimeMillis();
-    @Setter
     private int spectatingSubject;
-    @Setter
     private StreamingManagerService streamingManagerService = new StreamingManagerService(this, new ArrayList<>());
 
     public void write(AbstractPacket... packets) {
