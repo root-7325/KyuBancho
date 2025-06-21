@@ -1,9 +1,8 @@
 package com.root7325.bancho.core;
 
-import com.root7325.bancho.handlers.*;
-import com.root7325.bancho.packets.AbstractPacket;
-import com.root7325.bancho.packets.PacketType;
-import com.root7325.bancho.packets.impl.StopSpectatingPacket;
+import com.root7325.bancho.handler.*;
+import com.root7325.bancho.packet.AbstractPacket;
+import com.root7325.bancho.packet.PacketType;
 import com.root7325.netty.codec.LoginDataDecoder;
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,7 +1,6 @@
 package com.root7325.dao;
 
-import com.root7325.bancho.enums.Permissions;
-import com.root7325.entities.User;
+import com.root7325.entity.User;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;

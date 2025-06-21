@@ -1,8 +1,8 @@
 package com.root7325.bancho.core;
 
-import com.root7325.bancho.packets.PacketType;
-import com.root7325.bancho.packets.impl.UserStatsPacket;
-import com.root7325.bancho.packets.impl.generic.IntPacket;
+import com.root7325.bancho.packet.PacketType;
+import com.root7325.bancho.packet.impl.UserStatsPacket;
+import com.root7325.bancho.packet.impl.generic.IntPacket;
 import com.root7325.bancho.service.interfaces.IPacketDispatcherService;
 import lombok.extern.slf4j.Slf4j;
 

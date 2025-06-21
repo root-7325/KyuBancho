@@ -1,6 +1,6 @@
 package com.root7325.dao;
 
-import com.root7325.entities.User;
+import com.root7325.entity.User;
 
 /**
  * @author kate on 04.05.2025

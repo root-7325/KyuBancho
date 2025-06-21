@@ -1,8 +1,8 @@
 package com.root7325.bancho.service;
 
 import com.root7325.bancho.core.SessionManager;
-import com.root7325.bancho.packets.PacketType;
-import com.root7325.bancho.packets.impl.generic.EmptyPacket;
+import com.root7325.bancho.packet.PacketType;
+import com.root7325.bancho.packet.impl.generic.EmptyPacket;
 import com.root7325.utils.Constants;
 import lombok.extern.slf4j.Slf4j;
 

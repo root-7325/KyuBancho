@@ -1,8 +1,8 @@
 package com.root7325.netty.codec;
 
-import com.root7325.bancho.packets.AbstractPacket;
-import com.root7325.bancho.packets.PacketFactory;
-import com.root7325.bancho.packets.PacketType;
+import com.root7325.bancho.packet.AbstractPacket;
+import com.root7325.bancho.packet.PacketFactory;
+import com.root7325.bancho.packet.PacketType;
 import com.root7325.utils.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

@@ -16,6 +16,6 @@
 
         <property name="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
 
-        <mapping class="com.root7325.entities.User"/>
+        <mapping class="com.root7325.entity.User"/>
     </session-factory>
 </hibernate-configuration>
