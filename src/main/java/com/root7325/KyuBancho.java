@@ -2,6 +2,8 @@ package com.root7325;
 
 import com.root7325.bancho.core.ServiceLocator;
 import com.root7325.bancho.service.PingService;
+import com.root7325.config.Config;
+import com.root7325.config.ServerConfig;
 import com.root7325.netty.server.BanchoServer;
 import com.root7325.netty.server.BanchoServerBootstrap;
 import com.root7325.utils.ConsoleInputHandler;
@@ -20,12 +22,11 @@ import java.util.Scanner;
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class KyuBancho {
-    /** Hardcoded port for TCP server. */
-    private static final int BANCHO_PORT = 13381;
-
     public static void main(String[] args) {
         log.info("KyuBancho is starting.");
 
+        Config config = Config.getInstance();
+        ServerConfig serverConfig = config.getServerConfig();
         ServiceLocator serviceLocator = ServiceLocator.getInstance();
 
         PingService pingService = new PingService();
@@ -34,7 +35,7 @@ public class KyuBancho {
         ServerBootstrap serverBootstrap = BanchoServerBootstrap.create();
         BanchoServer banchoServer = new BanchoServer(serverBootstrap);
 
-        Thread serverThread = new Thread(() -> banchoServer.bind(BANCHO_PORT));
+        Thread serverThread = new Thread(() -> banchoServer.bind(serverConfig.getHost(), serverConfig.getPort()));
         serverThread.setDaemon(true);
 
         serverThread.start();
