@@ -1,6 +1,9 @@
 package com.root7325.utils;
 
+import com.google.inject.Inject;
+import com.root7325.dao.UserDAO;
 import com.root7325.dao.UserDAOImpl;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -11,9 +14,9 @@ import java.util.Scanner;
  * @author kate on 12.05.2025
  */
 @Slf4j
-@RequiredArgsConstructor
+@AllArgsConstructor(onConstructor = @__({@Inject}))
 public class ConsoleInputHandler {
-    private final UserDAOImpl userDAO;
+    private final UserDAO userDAO;
     private final Scanner scanner;
 
     public void start() {

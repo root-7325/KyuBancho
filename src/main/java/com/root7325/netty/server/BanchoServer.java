@@ -1,5 +1,8 @@
 package com.root7325.netty.server;
 
+import com.google.inject.Inject;
+import com.root7325.config.Config;
+import com.root7325.config.ServerConfig;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -13,12 +16,22 @@ import lombok.extern.slf4j.Slf4j;
  * Manages the Netty server bootstrap and binding.
  */
 @Slf4j
-@RequiredArgsConstructor
 public class BanchoServer {
+    private final String host;
+    private final int port;
     private final ServerBootstrap serverBootstrap;
 
-    public void bind(String host, int port) {
-        log.debug("Binding to :{}...", port);
+    @Inject
+    public BanchoServer(Config config, BanchoServerBootstrap banchoServerBootstrap) {
+        ServerConfig serverConfig = config.getServerConfig();
+        this.host = serverConfig.getHost();
+        this.port = serverConfig.getPort();
+
+        this.serverBootstrap = banchoServerBootstrap.create();
+    }
+
+    public void bind() {
+        log.debug("Binding to {}:{}...", host, port);
         try {
             ChannelFuture channelFuture = serverBootstrap.bind(host, port);
             channelFuture.addListener(future -> {

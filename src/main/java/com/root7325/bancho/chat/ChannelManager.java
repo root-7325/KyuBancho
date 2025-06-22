@@ -1,5 +1,6 @@
 package com.root7325.bancho.chat;
 
+import com.google.inject.Inject;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -11,16 +12,12 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author root7325 on 09.06.2025
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ChannelManager {
-    private static final ChannelManager INSTANCE = new ChannelManager();
+    private final Map<String, Channel> channels = new ConcurrentHashMap<>();
 
-    private final Map<String, Channel> channels = new ConcurrentHashMap<>() {{
-        put("#osu", new Channel("#osu"));
-    }};
-
-    public static ChannelManager getInstance() {
-        return INSTANCE;
+    @Inject
+    public ChannelManager() {
+        this.channels.put("#osu", new Channel("#osu"));
     }
 
     public Channel createChannel(String name) {

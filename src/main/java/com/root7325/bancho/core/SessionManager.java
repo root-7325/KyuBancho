@@ -1,5 +1,6 @@
 package com.root7325.bancho.core;
 
+import com.google.inject.Inject;
 import com.root7325.bancho.packet.PacketType;
 import com.root7325.bancho.packet.impl.UserStatsPacket;
 import com.root7325.bancho.packet.impl.generic.IntPacket;
@@ -15,16 +16,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author kate on 03.05.2025
  */
 @Slf4j
-public class SessionManager {
-    private static final SessionManager INSTANCE = new SessionManager();
+public class SessionManager implements ISessionManager {
     private final ConcurrentHashMap<Integer, BanchoSession> activeSessions = new ConcurrentHashMap<>();
-    private final IPacketDispatcherService packetDispatcherService = ServiceLocator.getInstance().getPacketDispatcherService();
+    private final IPacketDispatcherService packetDispatcherService;
 
-    private SessionManager() {
-    }
-
-    public static SessionManager getInstance() {
-        return INSTANCE;
+    @Inject
+    public SessionManager(IPacketDispatcherService packetDispatcherService) {
+        this.packetDispatcherService = packetDispatcherService;
     }
 
     public Collection<BanchoSession> getSessions() {
