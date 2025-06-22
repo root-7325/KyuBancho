@@ -26,7 +26,6 @@ public class KyuBancho {
 
         Injector injector = Guice.createInjector(new AppModule());
 
-        UserDAO userDAO = injector.getInstance(UserDAO.class);
         PingService pingService = injector.getInstance(PingService.class);
         BanchoServer banchoServer = injector.getInstance(BanchoServer.class);
 
@@ -36,7 +35,7 @@ public class KyuBancho {
         serverThread.setDaemon(true);
         serverThread.start();
 
-        ConsoleInputHandler consoleInputHandler = new ConsoleInputHandler(userDAO, new Scanner(System.in));
+        ConsoleInputHandler consoleInputHandler = injector.getInstance(ConsoleInputHandler.class);
         consoleInputHandler.start();
     }
 }

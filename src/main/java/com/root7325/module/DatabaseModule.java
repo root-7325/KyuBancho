@@ -14,7 +14,7 @@ import org.hibernate.cfg.Configuration;
 public class DatabaseModule extends AbstractModule {
     @Override
     protected void configure() {
-        bind(UserDAO.class).to(UserDAOImpl.class).in(Singleton.class);
+        bind(UserDAO.class).to(UserDAOImpl.class).asEagerSingleton();
     }
 
     @Provides
