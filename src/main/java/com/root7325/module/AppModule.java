@@ -13,5 +13,6 @@ public class AppModule extends AbstractModule {
         install(new ServiceModule());
         install(new NettyModule());
         install(new ChatModule());
+        install(new HandlerModule());
     }
 }

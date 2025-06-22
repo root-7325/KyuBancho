@@ -31,7 +31,7 @@ public class BanchoServer {
     }
 
     public void bind() {
-        log.debug("Binding to :{}...", port);
+        log.debug("Binding to {}:{}...", host, port);
         try {
             ChannelFuture channelFuture = serverBootstrap.bind(host, port);
             channelFuture.addListener(future -> {
