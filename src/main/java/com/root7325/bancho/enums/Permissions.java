@@ -8,11 +8,11 @@ import lombok.RequiredArgsConstructor;
  */
 @Getter
 @RequiredArgsConstructor
-public enum Permissions {
+public enum Permissions implements BitFlagEnum {
     None(2),
     Normal(1),
     Bat(2),
     Subscriber(4);
 
-    private final int value;
+    private final int bitMask;
 }

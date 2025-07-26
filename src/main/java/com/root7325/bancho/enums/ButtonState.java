@@ -1,9 +1,16 @@
 package com.root7325.bancho.enums;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author root7325 on 21.04.2024
  */
-public enum ButtonState {
+@Slf4j
+@Getter
+@AllArgsConstructor
+public enum ButtonState implements BitFlagEnum {
     None(0),
 
     Left1(1),
@@ -13,21 +20,5 @@ public enum ButtonState {
     Left2(4),
     Right2(8);
 
-    ButtonState(int i) {
-        this.i = i;
-    }
-
-    private final int i;
-
-    public int value() {
-        return i;
-    }
-
-    public static ButtonState getByValue(int val) {
-        for (ButtonState state : ButtonState.values()) {
-            if (state.value() == val)
-                return state;
-        }
-        return None;
-    }
+    private final int bitMask;
 }
