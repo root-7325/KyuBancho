@@ -47,7 +47,7 @@ public class LoginHandler {
         session.write(
                 new IntPacket(PacketType.Bancho_ProtocolNegotiation, 12),
                 new IntPacket(PacketType.Bancho_LoginReply, user.getId()),
-                new IntPacket(PacketType.Bancho_LoginPermissions, user.getPermissions().getValue()),
+                new IntPacket(PacketType.Bancho_LoginPermissions, user.getPermissionsMask()),
                 new StringPacket(PacketType.Bancho_Announce, "KyuBancho - welcome!")
         );
         processChannels(session);

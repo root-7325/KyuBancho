@@ -17,6 +17,6 @@ public class SpectateFramesHandler implements IHandler {
         SpectateFramesPacket framesPacket = (SpectateFramesPacket) packet;
         framesPacket.setPacketType(PacketType.Bancho_SpectateFrames); // :DD
 
-        manager.getSpectators().forEach(spectator -> spectator.writeAndFlush(framesPacket));
+        manager.handleSpectateFrames(framesPacket);
     }
 }

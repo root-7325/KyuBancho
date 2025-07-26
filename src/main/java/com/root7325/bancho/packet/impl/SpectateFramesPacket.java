@@ -25,15 +25,10 @@ public class SpectateFramesPacket extends AbstractPacket {
     private ScoreFrame scoreFrame;
     private ReplayAction replayAction;
 
-    public SpectateFramesPacket(PacketType type) {
-        this.type = type;
-    }
-
     @Override
     public void readFromStream(ByteBuf in) {
         this.replayFrameList = new ArrayList<>();
         int num = in.readShortLE();
-        log.debug("{}", num);
 
         for (int i = 0; i < num; i++) {
             replayFrameList.add(new ReplayFrame(in));

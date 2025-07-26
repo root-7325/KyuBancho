@@ -51,7 +51,7 @@ public class UserStatsPacket extends AbstractPacket {
             ByteBufUtils.writeString(user.getAvatarFilename(), out);
             out.writeByte(24);
             ByteBufUtils.writeString("Russia", out); // todo: GeoLite integration
-            out.writeByte(user.getPermissions().getValue());
+            out.writeByte(user.getPermissionsMask());
         }
     }
 }

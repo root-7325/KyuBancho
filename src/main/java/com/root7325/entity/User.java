@@ -1,5 +1,6 @@
 package com.root7325.entity;
 
+import com.root7325.bancho.enums.BitFlagEnum;
 import com.root7325.bancho.enums.Permissions;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.Data;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.EnumSet;
 
 /**
  * @author kate on 02.05.2025
@@ -26,23 +28,28 @@ public class User {
     private String passwordHash;
 
     @Column(name="ranked_score")
-    public long rankedScore;
+    private long rankedScore;
 
-    public float accuracy;
+    private float accuracy;
 
     @Column(name="play_count")
-    public int playCount;
+    private int playCount;
 
     @Column(name="total_score")
-    public long totalScore;
+    private long totalScore;
 
     @Column(name="score_rank")
-    public int rank;
+    private int rank;
 
     @Column(name="avatar_filename")
-    public String avatarFilename = "";
+    private String avatarFilename = "";
 
-    public Permissions permissions = Permissions.Normal;
+    @Column(name="permissions")
+    private int permissionsMask = Permissions.Normal.getBitMask();
+
+    @Transient
+    private EnumSet<Permissions> permissions;
+
 
     @PrePersist
     void prePersist() {
@@ -51,6 +58,11 @@ public class User {
         } catch (NoSuchAlgorithmException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    @PostLoad
+    void postLoad() {
+        setPermissions(BitFlagEnum.decodeFlags(permissionsMask, Permissions.class));
     }
 
     private String hashPassword(String password) throws NoSuchAlgorithmException {

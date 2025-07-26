@@ -1,9 +1,14 @@
 package com.root7325.bancho.enums;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * @author kate on 03.05.2025
  */
-public enum Mods {
+@Getter
+@AllArgsConstructor
+public enum Mods implements BitFlagEnum {
     None(0),
 
     NoFail(1),
@@ -30,13 +35,5 @@ public enum Mods {
 
     SpunOut(4096);
 
-    Mods(int i) {
-        this.i = i;
-    }
-
-    private final int i;
-
-    public int value() {
-        return i;
-    }
+    private final int bitMask;
 }

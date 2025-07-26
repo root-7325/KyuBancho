@@ -1,6 +1,7 @@
 package com.root7325.bancho.service;
 
 import com.root7325.bancho.core.BanchoSession;
+import com.root7325.bancho.packet.impl.SpectateFramesPacket;
 import com.root7325.bancho.service.interfaces.IStreamingManagerService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,8 +32,8 @@ public class StreamingManagerService implements IStreamingManagerService {
     }
 
     @Override
-    public void handleSpectateFrames(Object object) {
-        throw new UnsupportedOperationException("handleSpectateFrames is not implemented!");
+    public void handleSpectateFrames(SpectateFramesPacket spectateFramesPacket) {
+        spectators.forEach(spectator -> spectator.writeAndFlush(spectateFramesPacket));
     }
 
     @Override
