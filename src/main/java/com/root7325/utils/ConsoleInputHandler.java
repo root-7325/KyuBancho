@@ -3,6 +3,7 @@ package com.root7325.utils;
 import com.google.inject.Inject;
 import com.root7325.dao.UserDAO;
 import com.root7325.dao.UserDAOImpl;
+import com.root7325.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +33,10 @@ public class ConsoleInputHandler {
                         log.warn("Not enough arguments! useradd {username} {password}");
                         continue;
                     }
-                    userDAO.addUser(args[1], args[2]);
+                    User user = new User();
+                    user.setUsername(args[1]);
+                    user.setPasswordHash(args[2]);
+                    userDAO.addUser(user);
                     break;
                 default:
                     log.warn("Invalid command call: {}", Arrays.toString(args));

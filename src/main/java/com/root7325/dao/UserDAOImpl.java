@@ -10,6 +10,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+
 /**
  * @author kate on 12.05.2025
  */
@@ -17,35 +21,37 @@ import org.hibernate.Transaction;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class UserDAOImpl implements UserDAO {
     private final SessionFactory sessionFactory;
+    private final ExecutorService executorService;
 
     @Override
-    public User getUser(String username, String passwordHash) {
-        try (Session session = sessionFactory.openSession()) {
-            Query query = session.createQuery("from User where username=:username and passwordHash = :hash", User.class);
-            query.setParameter("username", username);
-            query.setParameter("hash", passwordHash);
-
-            return (User) query.getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
+    public CompletableFuture<Optional<User>> getUser(String username, String passwordHash) {
+        return CompletableFuture.supplyAsync(() -> {
+            try (Session session = sessionFactory.openSession()) {
+                return session.createSelectionQuery("from User where username=:username and passwordHash = :hash", User.class)
+                        .setParameter("username", username)
+                        .setParameter("hash", passwordHash)
+                        .uniqueResultOptional();
+            }
+        }, executorService);
     }
 
     @Override
-    public void addUser(String username, String password) {
-        User user = new User();
-        user.setUsername(username);
-        user.setPasswordHash(password);
+    public void addUser(User user) {
+        CompletableFuture.supplyAsync(() -> {
+            try (Session session = sessionFactory.openSession()) {
+                session.beginTransaction();
 
-        try (Session session = sessionFactory.openSession()) {
-            Transaction transaction = session.beginTransaction();
-
-            session.persist(user);
-            transaction.commit();
-            log.info("Added new user: {}.", username);
-        } catch (Exception e) {
-            log.error("Failed on persisting user", e);
-        }
+                try {
+                    session.persist(user);
+                    session.getTransaction().commit();
+                    log.info("Added new user: {}.", user.getUsername());
+                    return user;
+                } catch (Exception ex) {
+                    session.getTransaction().rollback();
+                    throw ex;
+                }
+            }
+        }, executorService);
     }
 
     @Override

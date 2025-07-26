@@ -11,7 +11,6 @@ public class RequestStatusUpdateHandler implements IHandler {
     @Override
     public void handle(AbstractPacket packet, BanchoSession session) {
         UserStatsPacket statsPacket = new UserStatsPacket(session.getUser(), session.getUserStatus());
-        session.write(statsPacket);
-        session.flush();
+        session.writeAndFlush(statsPacket);
     }
 }

@@ -16,8 +16,7 @@ public class PacketDispatcherServiceImpl implements IPacketDispatcherService {
 
     @Override
     public void sendPacket(BanchoSession session, AbstractPacket packet) {
-        session.write(packet);
-        session.flush();
+        session.writeAndFlush(packet);
     }
 
     @Override
