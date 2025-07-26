@@ -12,10 +12,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author kate on 03.05.2025
- * <p>
  * Service that handles client ping/pong mechanism.
  * Sends ping packets to all connected clients and removes inactive ones.
+ *
+ * @author kate on 03.05.2025
  */
 @Slf4j
 public class PingService {
@@ -42,11 +42,11 @@ public class PingService {
         log.trace("Ping was called.");
         sessionManager.getSessions().forEach(session -> {
             if (System.currentTimeMillis() - session.getLastPongTime() > 15_000) {
+                session.getChannel().close();
                 sessionManager.removeSession(session);
             }
 
-            session.write(new EmptyPacket(PacketType.Bancho_Ping));
-            session.flush();
+            session.writeAndFlush(new EmptyPacket(PacketType.Bancho_Ping));
         });
     }
 }

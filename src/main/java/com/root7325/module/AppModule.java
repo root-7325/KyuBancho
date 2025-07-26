@@ -2,8 +2,12 @@ package com.root7325.module;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.google.inject.Singleton;
 
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * Main application module that installs all other required modules.
@@ -24,5 +28,16 @@ public class AppModule extends AbstractModule {
     @Provides
     private Scanner provideScanner() {
         return new Scanner(System.in);
+    }
+
+    @Provides
+    private ExecutorService provideExecutorService() {
+        return Executors.newCachedThreadPool();
+    }
+
+    @Provides
+    @Singleton
+    private ScheduledExecutorService provideScheduledExecutorService() {
+        return Executors.newSingleThreadScheduledExecutor();
     }
 }
