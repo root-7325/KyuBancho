@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * Configuration class for basic server network settings.
+ *
  * @author root7325 on 17.06.2025
  */
 @Getter
