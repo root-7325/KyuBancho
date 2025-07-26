@@ -1,16 +1,15 @@
 package com.root7325.config;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
+ * Configuration class for basic server network settings.
+ *
  * @author root7325 on 17.06.2025
  */
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ServerConfig {
     private String host;
     private int port;

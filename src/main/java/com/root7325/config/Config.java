@@ -1,16 +1,16 @@
 package com.root7325.config;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
+ * Main configuration container class that holds all server configuration settings.
+ *
  * @author root7325 on 10.02.2025
  */
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Config {
     private ServerConfig serverConfig;
+    private DatabaseConfig databaseConfig;
 }

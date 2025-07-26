@@ -9,6 +9,8 @@ import com.root7325.netty.server.BanchoServer;
 import com.root7325.netty.server.BanchoServerBootstrap;
 
 /**
+ * This module configures Netty server, channel handlers, and networking dependencies.
+ *
  * @author root7325 on 22.06.2025
  */
 public class NettyModule extends AbstractModule {

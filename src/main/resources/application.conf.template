@@ -1,0 +1,11 @@
+serverConfig: {
+  host: "0.0.0.0",
+  port: 13381
+},
+databaseConfig: {
+  url: "DB_URL",
+  username: "DB_USERNAME",
+  password: "DB_PASSWORD",
+  showSql: false,
+  hbm2ddlAuto: "update"
+}
