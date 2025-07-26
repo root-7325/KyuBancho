@@ -6,6 +6,8 @@ import com.google.inject.Provides;
 import java.util.Scanner;
 
 /**
+ * Main application module that installs all other required modules.
+ *
  * @author root7325 on 22.06.2025
  */
 public class AppModule extends AbstractModule {

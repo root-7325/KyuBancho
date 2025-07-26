@@ -6,6 +6,8 @@ import com.root7325.bancho.handler.*;
 import com.root7325.bancho.packet.PacketType;
 
 /**
+ * This module binds message handler implementations.
+ *
  * @author root7325 on 22.06.2025
  */
 public class HandlerModule extends AbstractModule {

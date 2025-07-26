@@ -11,6 +11,8 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.net.SocketException;
+
 /**
  * @author kate on 02.05.2025
  */
@@ -22,7 +24,7 @@ public class BanchoChannelHandler extends ChannelInboundHandlerAdapter {
     private BanchoSession banchoSession;
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    public void channelActive(ChannelHandlerContext ctx) {
         log.info("{} is active!", ctx.channel().remoteAddress());
 
         this.banchoSession = new BanchoSession();
@@ -30,24 +32,22 @@ public class BanchoChannelHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+    public void channelInactive(ChannelHandlerContext ctx) {
         log.info("{} is inactive!", ctx.channel().remoteAddress());
         sessionManager.removeSession(banchoSession);
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
         if (msg == null) {
             return;
         }
 
         if (msg instanceof LoginDataDecoder.LoginData) {
-            log.debug("Handling login.");
             router.handleLogin((LoginDataDecoder.LoginData) msg, banchoSession);
         }
 
         if (msg instanceof AbstractPacket) {
-            log.debug("Handling game packet.");
             router.handle((AbstractPacket) msg, banchoSession);
         }
 
@@ -55,7 +55,10 @@ public class BanchoChannelHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        log.error("Exception caught!", cause);
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        if (!(cause instanceof SocketException)) {
+            log.error("Exception caught!", cause);
+        }
+        ctx.close();
     }
 }
